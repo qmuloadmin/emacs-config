@@ -199,7 +199,7 @@
  (next-multiframe-window) ;; Move to Right Window
  (next-multiframe-window) ;; Move to Bottom Window
  (shrink-window 25) ;; Shrink to a couple lines of text
- (eshell) ;; Start shell
+ (term "usr/bin/bash") ;; Start shell
  (previous-multiframe-window) ;; Go back to Right Window
  (shrink-window-horizontally 25)
  (previous-multiframe-window) ;; back to Left Window
