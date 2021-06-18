@@ -16,6 +16,7 @@ cargo xtask install --server
 
 # Assumes Go toolchain is already installed/configured
 GO111MODULE=on go get golang.org/x/tools/gopls@latest
+go install github.com/go-delve/delve/cmd/dlv@latest
 
 # Assumes npm is installed
 

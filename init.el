@@ -64,12 +64,7 @@
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-shutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
+		 )
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
@@ -114,6 +109,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(blink-matching-paren t)
  '(custom-safe-themes
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(horizontal-scroll-bar-mode nil)
@@ -186,6 +182,18 @@
             (lambda ()
               (add-hook 'before-save-hook 'ime-go-before-save))))
 
+;; DAP (standard protocol for remote debugging servers) Configuration
+
+;;(use-package dap-mode
+;;  :ensure t
+;; )
+
+;;(dap-register-debug-provider
+;; "go"
+;; (lambda (conf)
+;;   (plist-put conf :debugPort 3334)
+;;   (plist-put conf :host "localhost")
+;;   conf))
 
 ;; Custom Window Layout at start
 ;; layout definition
