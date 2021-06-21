@@ -25,8 +25,7 @@ npm i -g bash-language-server
 npm i -g markdown-it
 
 # Assumes Python is installed
-
-pip install python-language-server[all]
+pip install 'python-lsp-server[all]'
 
 ## Random stuff to buld out the emacs env 
 mkdir ~/.emacs-saves
