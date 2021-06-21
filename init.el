@@ -115,7 +115,7 @@
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(horizontal-scroll-bar-mode nil)
  '(package-selected-packages
-   '(clojure-mode phpunit php-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -149,13 +149,9 @@
 
 (global-set-key (kbd "S-M-r") 'lsp-rename)
 
-;; PHP DE Configuration
-
-(unless (package-installed-p `php-mode)
-  (package-install `php-mode))
-
 ;; Update this path to match whatever path intelephense was installed in
 (add-to-list 'exec-path "~/.nvm/versions/node/v10.20.1/bin/")
+(add-to-list 'exec-path "~/bin/")
 
 ;; Go DE Configuration
 
@@ -196,6 +192,17 @@
 ;;   (plist-put conf :host "localhost")
 ;;   conf))
 
+;; Markdown support
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "markdown-it"))
+
+
 ;; Custom Window Layout at start
 ;; layout definition
 (defun startup-layout ()
@@ -209,7 +216,6 @@
  (next-multiframe-window) ;; Move to Bottom Window
  (shrink-window 25) ;; Shrink to a couple lines of text
  (term "/bin/bash") ;; Start shell
- (set-window-dedicated-p (active-window) t)
  (previous-multiframe-window) ;; Go back to Right Window
  (shrink-window-horizontally 25)
  (previous-multiframe-window) ;; back to Left Window

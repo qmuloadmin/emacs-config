@@ -22,6 +22,7 @@ go install github.com/go-delve/delve/cmd/dlv@latest
 
 npm i -g intelephense
 npm i -g bash-language-server
+npm i -g markdown-it
 
 # Assumes Python is installed
 
