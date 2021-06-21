@@ -23,5 +23,9 @@ go install github.com/go-delve/delve/cmd/dlv@latest
 npm i -g intelephense
 npm i -g bash-language-server
 
+# Assumes Python is installed
+
+pip install python-language-server[all]
+
 ## Random stuff to buld out the emacs env 
 mkdir ~/.emacs-saves
