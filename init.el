@@ -18,6 +18,14 @@
 (electric-pair-mode)
 (global-tab-line-mode) ;; Enable buffer tabs in each window
 
+;; SQL Mode
+;; Key Bindings
+
+(eval-after-load 'sql
+  '(define-key sql-mode-map (kbd "<C-return>") 'sql-send-paragraph))
+(eval-after-load 'sql
+  '(define-key sql-mode-map (kbd "<M-return>") 'sql-send-region))
+
 ;; Org Mode
 (unless (package-installed-p 'org)
   (package-refresh-contents)
@@ -66,12 +74,6 @@
               ("M-?" . lsp-find-references)
 		 )
   :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
-
-  ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
 
@@ -114,6 +116,7 @@
  '(custom-safe-themes
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(horizontal-scroll-bar-mode nil)
+ '(mouse-wheel-tilt-scroll t)
  '(package-selected-packages
    '(clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(scroll-bar-mode nil))
@@ -139,7 +142,7 @@
 (global-set-key (kbd "C-S-<up>") 'windmove-up)
 (global-set-key (kbd "C-S-<down>") 'windmove-down)
 
-;; More consistent Copy/kill-ring-save
+;; More consistent Copy/Cut/Paste with "non emacs" bindings and mouse region selection
 
 (global-set-key (kbd "C-S-c") 'kill-ring-save)
 (global-set-key (kbd "C-S-x") 'kill-region)
@@ -164,7 +167,7 @@
 
 ;; Go - lsp-mode
 
-(defun ime-go-before-save ()
+(defun go-before-save ()
   (interactive)
   (when lsp-mode
     (lsp-organize-imports)
@@ -177,7 +180,7 @@
   (add-hook 'go-mode-hook 'lsp-deferred)
   (add-hook 'go-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook 'ime-go-before-save))))
+              (add-hook 'before-save-hook 'go-before-save))))
 
 ;; DAP (standard protocol for remote debugging servers) Configuration
 
@@ -223,8 +226,7 @@
 
 ;; execute the layout
 (startup-layout)
-
-(sidebar-toggle-hidden-files)
+(sidebar-toggle-hidden-files) ; disable hidden files by default (press h to enable)
 
 ;; Themes
 
