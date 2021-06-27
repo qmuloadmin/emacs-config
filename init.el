@@ -89,6 +89,7 @@
   ((php-mode . lsp))
   ((sh-mode . lsp))
   ((python-mode . lsp))
+  ((web-mode . lsp))
   :commands lsp
   :custom
   (lsp-eldoc-render-all t)
@@ -204,7 +205,26 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "markdown-it"))
+  :init (setq markdown-command "markdown-it")
+  :config (add-hook 'markdown-mode
+				  (lambda ()
+					   (make-local-variable 'truncate-lines)
+					   (setq truncate-lines nil))))
+
+;; Webmode for TSX highlighting (works with LSP somehow)
+(use-package web-mode  :ensure t
+  :mode (("\\.js\\'" . web-mode)
+         ("\\.jsx\\'" . web-mode)
+         ("\\.ts\\'" . web-mode)
+         ("\\.tsx\\'" . web-mode)
+         ("\\.html\\'" . web-mode)
+         ("\\.vue\\'" . web-mode)
+	 ("\\.json\\'" . web-mode))
+  :commands web-mode
+  :config
+  (setq web-mode-content-types-alist
+	'(("jsx" . "\\.js[x]?\\'")))
+)
 
 
 ;; Custom Window Layout at start
