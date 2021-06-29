@@ -18,6 +18,10 @@
 (electric-pair-mode)
 (global-tab-line-mode) ;; Enable buffer tabs in each window
 
+;; hs-mode (for code hiding/showing blocks)
+(global-set-key (kbd "<M-up>") 'hs-hide-block)
+(global-set-key (kbd "<M-down>") 'hs-show-block)
+
 ;; SQL Mode
 ;; Key Bindings
 
@@ -96,7 +100,8 @@
   (lsp-idle-delay 0.6)
   (lsp-rust-analyzer-server-display-inlay-hints t)
    :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+   (add-hook 'lsp-mode-hook 'hs-minor-mode)
 
 (use-package lsp-ui
   :ensure t
