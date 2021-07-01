@@ -22,13 +22,20 @@
 (global-set-key (kbd "<M-up>") 'hs-hide-block)
 (global-set-key (kbd "<M-down>") 'hs-show-block)
 
+;; Goto line (based on evil :)
+(global-set-key (kbd "C-:") 'goto-line)
+
 ;; SQL Mode
-;; Key Bindings
 
 (eval-after-load 'sql
   '(define-key sql-mode-map (kbd "<C-return>") 'sql-send-paragraph))
 (eval-after-load 'sql
   '(define-key sql-mode-map (kbd "<M-return>") 'sql-send-region))
+
+;; Magit
+(unless (package-installed-p 'magit)
+  (package-refresh-contents)
+  (package-install 'magit))
 
 ;; Org Mode
 (unless (package-installed-p 'org)
@@ -106,10 +113,11 @@
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
-  :custom
-  (lsp-ui-peek-always-show nil)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable t))
+;  :custom
+;  (lsp-ui-peek-always-show nil)
+;  (lsp-ui-sideline-show-hover t)
+;  (lsp-ui-doc-enable t)
+  )
 
 ;; Random Custom stuff
 
