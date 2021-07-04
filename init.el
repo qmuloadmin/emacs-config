@@ -37,10 +37,14 @@
   (package-refresh-contents)
   (package-install 'magit))
 
+(define-key global-map (kbd "C-c g") 'magit-status)
+
 ;; Org Mode
-(unless (package-installed-p 'org)
-  (package-refresh-contents)
-  (package-install 'org))
+(use-package org
+  :ensure t
+  :hook
+  ((org-mode . company))
+  )
 
 ;; Sidebar Configuration
 
@@ -106,9 +110,10 @@
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
   (lsp-rust-analyzer-server-display-inlay-hints t)
-   :config
-   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
-   (add-hook 'lsp-mode-hook 'hs-minor-mode)
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (add-hook 'lsp-mode-hook 'hs-minor-mode)
+)
 
 (use-package lsp-ui
   :ensure t
@@ -132,8 +137,9 @@
  '(horizontal-scroll-bar-mode nil)
  '(mouse-wheel-flip-direction t)
  '(mouse-wheel-tilt-scroll t)
+ '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t) (js . t)))
  '(package-selected-packages
-   '(clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -224,7 +230,14 @@
 					   (make-local-variable 'truncate-lines)
 					   (setq truncate-lines nil))))
 
-;; Webmode for TSX highlighting (works with LSP somehow)
+;; JS Stuff
+
+;; Prettier
+(use-package prettier-js
+  :ensure t
+  )
+
+;; Webmode for TSX highlighting (works with LSP)
 (use-package web-mode  :ensure t
   :mode (("\\.js\\'" . web-mode)
          ("\\.jsx\\'" . web-mode)
@@ -232,7 +245,9 @@
          ("\\.tsx\\'" . web-mode)
          ("\\.html\\'" . web-mode)
          ("\\.vue\\'" . web-mode)
-	 ("\\.json\\'" . web-mode))
+		 ("\\.json\\'" . web-mode))
+  :hook
+  ((web-mode . prettier-js-mode))
   :commands web-mode
   :config
   (setq web-mode-content-types-alist
