@@ -1,5 +1,5 @@
 ;; General setup of high level deps, paths, tabs, etc
-
+(setq default-directory "/home/zach/Projects/src/github.com/OrderMyGear/")
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
@@ -17,6 +17,8 @@
 (desktop-save-mode 1)
 (electric-pair-mode)
 (global-tab-line-mode) ;; Enable buffer tabs in each window
+(tool-bar-mode -1)
+(menu-bar-mode -1)
 
 ;; hs-mode (for code hiding/showing blocks)
 (global-set-key (kbd "<M-up>") 'hs-hide-block)
@@ -25,12 +27,26 @@
 ;; Goto line (based on evil :)
 (global-set-key (kbd "C-:") 'goto-line)
 
+;; Helm search
+
+(use-package helm
+  :ensure t
+  )
+
 ;; SQL Mode
 
 (eval-after-load 'sql
   '(define-key sql-mode-map (kbd "<C-return>") 'sql-send-paragraph))
 (eval-after-load 'sql
   '(define-key sql-mode-map (kbd "<M-return>") 'sql-send-region))
+
+(defun buffer-to-sql-and-sqli ()
+  (interactive)
+  (sql-mode)
+  (sql-set-sqli-buffer-generally)
+)
+
+(define-key global-map (kbd "C-c S") 'buffer-to-sql-and-sqli)
 
 ;; Magit
 (unless (package-installed-p 'magit)
@@ -44,6 +60,12 @@
   :ensure t
   :hook
   ((org-mode . company))
+  )
+(require 'org)
+
+;; HTTP Client For Org Mode
+(use-package restclient
+  :ensure t
   )
 
 ;; Sidebar Configuration
@@ -74,6 +96,18 @@
 (require 'sidebar)
 (global-set-key (kbd "C-x C-f") 'sidebar-open)
 (global-set-key (kbd "C-x C-a") 'sidebar-buffers-open)
+(defun sidebar-go-home-omg ()
+  (interactive)
+  (sidebar-open-directory (sidebar-file-struct "~/Projects/src/github.com/OrderMyGear"))
+)
+(global-set-key (kbd "C-c C-o") 'sidebar-go-home-omg)
+
+;; Quick yaml config
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+  )
 
 ;; LSP-Mode optional deps
 (unless (package-installed-p 'flycheck)
@@ -83,14 +117,16 @@
 ;; Also, PHP, Go, Bash is buried in here, a hook about php-mode
 
 (use-package rustic
-  :ensure t
-  :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-		 )
+  :mode ("\\.rs\\'" . rustic-mode)
   :config
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+  (setq rustic-lsp-client 'lsp-mode
+        rustic-lsp-server 'rust-analyzer
+        rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+  (define-key rustic-mode-map (kbd "C-c R") 'rustic-cargo-run)
+  (define-key rustic-mode-map (kbd "C-c T") 'rustic-cargo-test)
+  (define-key rustic-mode-map (kbd "C-c F") 'rustic-cargo-fmt)
+  (add-hook 'rustic-mode-hook #'company-mode)
+)
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm
@@ -100,7 +136,6 @@
   :ensure t
   :hook
   ((go-mode . lsp))
-  ((rustic . lsp))
   ((php-mode . lsp))
   ((sh-mode . lsp))
   ((python-mode . lsp))
@@ -118,10 +153,10 @@
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
-;  :custom
-;  (lsp-ui-peek-always-show nil)
-;  (lsp-ui-sideline-show-hover t)
-;  (lsp-ui-doc-enable t)
+  :custom
+  (lsp-ui-peek-always-show nil)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable t)
   )
 
 ;; Random Custom stuff
@@ -135,12 +170,22 @@
  '(custom-safe-themes
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(horizontal-scroll-bar-mode nil)
+ '(lsp-file-watch-threshold 4000)
+ '(lsp-ui-doc-position 'at-point)
+ '(lsp-ui-flycheck-list-position 'right)
  '(mouse-wheel-flip-direction t)
  '(mouse-wheel-tilt-scroll t)
- '(org-babel-load-languages '((emacs-lisp . t) (python . t) (shell . t) (js . t)))
+ '(org-babel-load-languages
+   '((emacs-lisp . t)
+	 (python . t)
+	 (shell . t)
+	 (js . t)
+	 (sql . t)))
+ '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
- '(scroll-bar-mode nil))
+   '(helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+ '(scroll-bar-mode nil)
+ '(sidebar-adjust-auto-window-width nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -268,8 +313,10 @@
  (next-multiframe-window) ;; Move to Bottom Window
  (shrink-window 25) ;; Shrink to a couple lines of text
  (term "/bin/bash") ;; Start shell
+ (set-window-dedicated-p (get-buffer-window) t) ;; Make the terminal invalid for other buffers
  (previous-multiframe-window) ;; Go back to Right Window
- (shrink-window-horizontally 25)
+ (shrink-window-horizontally 20)
+ (split-window-vertically) ;; -> --  so we have 1 left and 2 right, and a terminal below
  (previous-multiframe-window) ;; back to Left Window
 )
 
@@ -299,3 +346,4 @@
 )
 
 (global-set-key (kbd "C-S-t") 'toggle-theme)
+(sidebar-go-home-omg)
