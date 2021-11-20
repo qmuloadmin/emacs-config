@@ -138,6 +138,11 @@
   ;; so that run C-c C-c C-r works without having to confirm
   (setq-local buffer-save-without-query t))
 
+;; PHP mode
+(use-package php-mode
+  :ensure t
+)
+
 (use-package lsp-mode
   :ensure t
   :hook
