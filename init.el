@@ -63,6 +63,12 @@
   )
 (require 'org)
 
+;; Add go support for Org Babel
+(require 'ob-go)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((go . t)))
+
 ;; HTTP Client For Org Mode
 (use-package restclient
   :ensure t
@@ -166,9 +172,27 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(blink-matching-paren t)
  '(custom-safe-themes
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
+ '(hl-todo-keyword-faces
+   '(("TODO" . "#dc752f")
+	 ("NEXT" . "#dc752f")
+	 ("THEM" . "#2d9574")
+	 ("PROG" . "#4f97d7")
+	 ("OKAY" . "#4f97d7")
+	 ("DONT" . "#f2241f")
+	 ("FAIL" . "#f2241f")
+	 ("DONE" . "#86dc2f")
+	 ("NOTE" . "#b1951d")
+	 ("KLUDGE" . "#b1951d")
+	 ("HACK" . "#b1951d")
+	 ("TEMP" . "#b1951d")
+	 ("FIXME" . "#dc752f")
+	 ("XXX+" . "#dc752f")
+	 ("\\?\\?\\?+" . "#dc752f")))
  '(horizontal-scroll-bar-mode nil)
  '(lsp-file-watch-threshold 4000)
  '(lsp-ui-doc-position 'at-point)
@@ -180,10 +204,14 @@
 	 (python . t)
 	 (shell . t)
 	 (js . t)
-	 (sql . t)))
+	 (sql . t)
+	 (awk . t)))
+ '(org-fontify-done-headline nil)
+ '(org-fontify-todo-headline nil)
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(ob-rust ob-go helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+ '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e"))
  '(scroll-bar-mode nil)
  '(sidebar-adjust-auto-window-width nil))
 (custom-set-faces
@@ -347,3 +375,15 @@
 
 (global-set-key (kbd "C-S-t") 'toggle-theme)
 (sidebar-go-home-omg)
+
+;; Advice modifiers go here
+
+(defun my-message-with-timestamp (old-func fmt-string &rest args)
+   "Prepend current timestamp (with microsecond precision) to a message"
+   (apply old-func
+          (concat (format-time-string "[%F %T.%3N %Z] ")
+                   fmt-string)
+          args))
+
+ (advice-add 'message :around #'my-message-with-timestamp)
+ 
