@@ -182,7 +182,7 @@
  '(blink-matching-paren t)
  '(custom-safe-themes
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
- '(helm-locate-command "plocate %s -e -A --regex %s")
+ '(helm-locate-command "plocate %s -e --regex %s")
  '(horizontal-scroll-bar-mode nil)
  '(lsp-file-watch-threshold 4000)
  '(lsp-ui-doc-position 'at-point)
