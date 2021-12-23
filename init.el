@@ -78,37 +78,25 @@
 
 ;; Sidebar Configuration
 
-(unless (package-installed-p 's)
-  (package-refresh-contents)
-  (package-install 's))
-(unless (package-installed-p 'dash)
-  (package-refresh-contents)
-  (package-install 'dash))
-(unless (package-installed-p 'dash-functional)
-  (package-refresh-contents)
-  (package-install 'dash-functional))
-(unless (package-installed-p 'ov)
-  (package-refresh-contents)
-  (package-install 'ov))
-(unless (package-installed-p 'frame-local)
-  (package-refresh-contents)
-  (package-install 'frame-local))
-(unless (package-installed-p 'projectile)
-  (package-refresh-contents)
-  (package-install 'projectile))
-(add-to-list 'load-path "~/.emacs.d/libs")
-(require 'font-lock+)
-(require 'move-border)
-(add-to-list 'load-path "~/.local/share/icons-in-terminal/")
-(add-to-list 'load-path "~/Projects/src/github.com/sebastiencs/sidebar.el")
-(require 'sidebar)
-(global-set-key (kbd "C-x C-f") 'sidebar-open)
-(global-set-key (kbd "C-x C-a") 'sidebar-buffers-open)
-(defun sidebar-go-home-omg ()
-  (interactive)
-  (sidebar-open-directory (sidebar-file-struct "~/Projects/src/github.com/OrderMyGear"))
+(use-package all-the-icons
+  :ensure t
 )
-(global-set-key (kbd "C-c C-o") 'sidebar-go-home-omg)
+(use-package dired-sidebar
+  :bind (("C-x C-f" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-use-term-integration t)
+)
 
 ;; Quick yaml config
 (use-package yaml-mode
@@ -197,14 +185,13 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
- '(scroll-bar-mode nil)
- '(sidebar-adjust-auto-window-width nil))
+   '(php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#292b2e" :foreground "#b2b2b2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 98 :width normal :foundry "UKWN" :family "Iosevka Fixed Medium"))))
  '(tab-line-tab ((t (:inherit tab-line :background "gray" :foreground "black" :box (:line-width 2 :color "gray") :weight semi-bold :height 80 :width ultra-condensed))))
  '(tab-line-tab-inactive ((t (:inherit tab-line-tab :background "gray17" :foreground "white smoke" :box (:line-width 2 :color "gray17") :weight semi-bold)))))
 
@@ -319,8 +306,6 @@
 (defun startup-layout ()
  (interactive)
  (delete-other-windows)
- (sidebar-open)
- (next-multiframe-window) ;; Move out of sidebar window
  (split-window-vertically) ;; -> --
  (split-window-horizontally) ;;  -> |
  (next-multiframe-window) ;; Move to Right Window
@@ -336,7 +321,6 @@
 
 ;; execute the layout
 (startup-layout)
-(sidebar-toggle-hidden-files) ; disable hidden files by default (press h to enable)
 
 ;; Themes
 
@@ -360,7 +344,6 @@
 )
 
 (global-set-key (kbd "C-S-t") 'toggle-theme)
-(sidebar-go-home-omg)
 
 ;; Advice modifiers go here
 
