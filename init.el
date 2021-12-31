@@ -66,6 +66,8 @@
 (require 'org)
 
 ;; Add go support for Org Babel
+(use-package ob-go
+  :ensure t)
 (require 'ob-go)
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -169,7 +171,7 @@
  ;; If there is more than one, they won't work right.
  '(blink-matching-paren t)
  '(custom-safe-themes
-   '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
+   '("c2e1201bb538b68c0c1fdcf31771de3360263bd0e497d9ca8b7a32d5019f2fae" "33ea268218b70aa106ba51a85fe976bfae9cf6931b18ceaf57159c558bbcd1e6" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(helm-locate-command "plocate %s -e --regex %s")
  '(horizontal-scroll-bar-mode nil)
  '(lsp-file-watch-threshold 4000)
@@ -185,7 +187,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
+   '(doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -300,7 +302,6 @@
 	'(("jsx" . "\\.js[x]?\\'")))
 )
 
-
 ;; Custom Window Layout at start
 ;; layout definition
 (defun startup-layout ()
@@ -311,6 +312,7 @@
  (next-multiframe-window) ;; Move to Right Window
  (next-multiframe-window) ;; Move to Bottom Window
  (shrink-window 25) ;; Shrink to a couple lines of text
+ (tab-line-mode) ;; disable tab line for this window
  (term "/bin/bash") ;; Start shell
  (set-window-dedicated-p (get-buffer-window) t) ;; Make the terminal invalid for other buffers
  (previous-multiframe-window) ;; Go back to Right Window
@@ -320,26 +322,27 @@
 )
 
 ;; execute the layout
-(startup-layout)
+;;(startup-layout)
 
 ;; Themes
-
 (unless (package-installed-p 'zenburn-theme)
   (package-install 'zenburn-theme))
-(unless (package-installed-p 'spacemacs-theme)
-  (package-install 'spacemacs-theme))
-(load-theme 'spacemacs-dark)
+(unless (package-installed-p 'doneburn-theme)
+  (package-install 'doneburn-theme))
+(load-theme 'doneburn)
+(load-file "/home/zach/.emacs.d/themes/uwu.el/uwu.el")
+(enable-theme 'uwu)
 
 (defun toggle-theme ()
   (interactive)
-  (if (eq (car custom-enabled-themes) 'spacemacs-dark)
+  (if (eq (car custom-enabled-themes) 'uwu)
       (progn 
-       (disable-theme 'spacemacs-dark)
-       (enable-theme 'spacemacs)
+       (disable-theme 'uwu)
+       (enable-theme 'doneburn)
       )
     (progn
-     (disable-theme 'spacemacs)
-     (enable-theme 'spacemacs-dark)
+     (disable-theme 'doneburn)
+     (enable-theme 'uwu)
     ))
 )
 
