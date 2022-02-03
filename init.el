@@ -187,7 +187,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
+   '(ob-go lsp-python-ms doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -199,10 +199,10 @@
 
 ;; Window resizing configuration
 
-(global-set-key (kbd "M-S-<up>") 'move-border-up)
-(global-set-key (kbd "M-S-<down>") 'move-border-down)
-(global-set-key (kbd "M-S-<left>") 'move-border-left)
-(global-set-key (kbd "M-S-<right>") 'move-border-right)
+(global-set-key (kbd "M-S-<up>") 'enlarge-window-vertically)
+(global-set-key (kbd "M-S-<down>") 'shrink-window-vertically)
+(global-set-key (kbd "M-S-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "M-S-<right>") 'enlarge-window-horizontally)
 
 ;; Window movement configuration
 
@@ -300,7 +300,7 @@
   :config
   (setq web-mode-content-types-alist
 	'(("jsx" . "\\.js[x]?\\'")))
-)
+  )
 
 ;; Custom Window Layout at start
 ;; layout definition
