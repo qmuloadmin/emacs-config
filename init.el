@@ -20,6 +20,18 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+;; Better startup screen, org mode todo integration
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+
+;; Projectile for project aware searching (helm-projectile)
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1))
+
 ;; hs-mode (for code hiding/showing blocks)
 (global-set-key (kbd "<M-up>") 'hs-hide-block)
 (global-set-key (kbd "<M-down>") 'hs-show-block)
@@ -82,7 +94,11 @@
 
 (use-package all-the-icons
   :ensure t
-)
+  )
+
+(use-package all-the-icons-dired
+  :ensure t
+  )
 (use-package dired-sidebar
   :bind (("C-x C-f" . dired-sidebar-toggle-sidebar))
   :ensure t
@@ -172,6 +188,8 @@
  '(blink-matching-paren t)
  '(custom-safe-themes
    '("c2e1201bb538b68c0c1fdcf31771de3360263bd0e497d9ca8b7a32d5019f2fae" "33ea268218b70aa106ba51a85fe976bfae9cf6931b18ceaf57159c558bbcd1e6" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
+ '(dashboard-items '((projects . 5) (bookmarks . 5) (agenda . 5)))
+ '(dashboard-projects-backend 'projectile)
  '(helm-locate-command "plocate %s -e --regex %s")
  '(horizontal-scroll-bar-mode nil)
  '(lsp-file-watch-threshold 4000)
@@ -187,7 +205,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(ob-go lsp-python-ms doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
+   '(all-the-icons-dired dashboard ob-go lsp-python-ms doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -330,7 +348,7 @@
 (unless (package-installed-p 'doneburn-theme)
   (package-install 'doneburn-theme))
 (load-theme 'doneburn)
-(load-file "/home/zach/.emacs.d/themes/uwu.el/uwu.el")
+(load-file "/home/zach/.emacs.d/themes/uwu.el/uwu-theme.el")
 (enable-theme 'uwu)
 
 (defun toggle-theme ()
