@@ -32,19 +32,25 @@
   :init
   (projectile-mode +1))
 
-;; hs-mode (for code hiding/showing blocks)
-(global-set-key (kbd "<M-up>") 'hs-hide-block)
-(global-set-key (kbd "<M-down>") 'hs-show-block)
-
-;; Goto line (based on evil :)
-(global-set-key (kbd "C-:") 'goto-line)
-
 ;; Helm search
 
 (use-package helm
   :ensure t
   )
 
+(use-package helm-projectile
+  :ensure t
+  )
+
+(global-set-key (kbd "C-c C-g") 'helm-projectile-rg)
+(global-set-key (kbd "C-c C-f") 'helm-projectile-find-file)
+
+;; hs-mode (for code hiding/showing blocks)
+(global-set-key (kbd "<M-up>") 'hs-hide-block)
+(global-set-key (kbd "<M-down>") 'hs-show-block)
+
+;; Goto line (based on evil :)
+(global-set-key (kbd "C-:") 'goto-line)
 (global-set-key (kbd "C-c l") 'helm-locate)
 
 ;; SQL Mode
@@ -205,7 +211,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(all-the-icons-dired dashboard ob-go lsp-python-ms doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
+   '(helm-rg helm-projectile all-the-icons-dired dashboard ob-go lsp-python-ms doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
