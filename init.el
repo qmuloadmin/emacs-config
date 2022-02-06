@@ -196,6 +196,7 @@
    '("c2e1201bb538b68c0c1fdcf31771de3360263bd0e497d9ca8b7a32d5019f2fae" "33ea268218b70aa106ba51a85fe976bfae9cf6931b18ceaf57159c558bbcd1e6" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(dashboard-items '((projects . 5) (bookmarks . 5) (agenda . 5)))
  '(dashboard-projects-backend 'projectile)
+ '(dired-sidebar-width 28)
  '(helm-locate-command "plocate %s -e --regex %s")
  '(horizontal-scroll-bar-mode nil)
  '(lsp-file-watch-threshold 4000)
