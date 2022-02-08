@@ -42,8 +42,8 @@
   :ensure t
   )
 
-(global-set-key (kbd "C-c C-g") 'helm-projectile-rg)
-(global-set-key (kbd "C-c C-f") 'helm-projectile-find-file)
+(global-set-key (kbd "C-c r") 'helm-projectile-rg)
+(global-set-key (kbd "C-c f") 'helm-projectile-find-file)
 
 ;; hs-mode (for code hiding/showing blocks)
 (global-set-key (kbd "<M-up>") 'hs-hide-block)
@@ -199,7 +199,9 @@
  '(dired-sidebar-width 28)
  '(helm-locate-command "plocate %s -e --regex %s")
  '(horizontal-scroll-bar-mode nil)
+ '(lsp-disabled-clients '(\"jsts-ls\"))
  '(lsp-file-watch-threshold 4000)
+ '(lsp-intelephense-licence-key "004XGB7ZTX9SUL5")
  '(lsp-ui-doc-position 'at-point)
  '(lsp-ui-flycheck-list-position 'right)
  '(mouse-wheel-flip-direction t)
@@ -212,7 +214,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(helm-rg helm-projectile all-the-icons-dired dashboard ob-go lsp-python-ms doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
+   '(helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -223,18 +225,23 @@
  '(tab-line-tab-inactive ((t (:inherit tab-line-tab :background "gray17" :foreground "white smoke" :box (:line-width 2 :color "gray17") :weight semi-bold)))))
 
 ;; Window resizing configuration
+;; Set to C-c combined with WASD (capital) controls
+;; Makes sense only in the case of the left-upper-most window (push border to right to enlarge, thus D)
+;; Can be repeated easily with C-x z z z z z z
 
-(global-set-key (kbd "M-S-<up>") 'enlarge-window-vertically)
-(global-set-key (kbd "M-S-<down>") 'shrink-window-vertically)
-(global-set-key (kbd "M-S-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "M-S-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-c W") 'enlarge-window-vertically)
+(global-set-key (kbd "C-c S") 'shrink-window-vertically)
+(global-set-key (kbd "C-c A") 'shrink-window-horizontally)
+(global-set-key (kbd "C-c D") 'enlarge-window-horizontally)
 
 ;; Window movement configuration
+;; Set to C-c (user-space modifier) combined with WASD controls
+;; For me, this is both intuitive and can be done single handed
 
-(global-set-key (kbd "C-S-<left>") 'windmove-left)
-(global-set-key (kbd "C-S-<right>") 'windmove-right)
-(global-set-key (kbd "C-S-<up>") 'windmove-up)
-(global-set-key (kbd "C-S-<down>") 'windmove-down)
+(global-set-key (kbd "C-c a") 'windmove-left)
+(global-set-key (kbd "C-c d") 'windmove-right)
+(global-set-key (kbd "C-c w") 'windmove-up)
+(global-set-key (kbd "C-c s") 'windmove-down)
 
 ;; More consistent Copy/Cut/Paste with "non emacs" bindings and mouse region selection
 
@@ -249,6 +256,7 @@
 ;; Update this path to match whatever path intelephense was installed in
 (add-to-list 'exec-path "~/.nvm/versions/node/v10.20.1/bin/")
 (add-to-list 'exec-path "~/bin/")
+(add-to-list 'exec-path "~/.local/bin/")
 
 ;; Go DE Configuration
 
