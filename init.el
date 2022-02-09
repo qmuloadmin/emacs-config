@@ -389,6 +389,8 @@
 )
 
 (global-set-key (kbd "C-S-t") 'toggle-theme)
+(toggle-theme)
+(toggle-theme)
 
 ;; Advice modifiers go here
 
