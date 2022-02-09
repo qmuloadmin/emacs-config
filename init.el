@@ -271,7 +271,7 @@
 
 (defun go-before-save ()
   (interactive)
-  (when lsp-mode
+  (when go-mode
     (lsp-organize-imports)
     (lsp-format-buffer)))
 
@@ -314,8 +314,17 @@
 ;; JS Stuff
 
 ;; Prettier
+(defun prettier-before-save ()
+  (interactive)
+  (when web-mode
+	(prettier-js)
+	))
+
 (use-package prettier-js
   :ensure t
+  :config (add-hook 'prettier-js-mode-hook
+					(lambda()
+					  (add-hook 'before-save-hook 'prettier-before-save)))
   )
 
 ;; Webmode for TSX highlighting (works with LSP)
