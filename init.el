@@ -91,6 +91,14 @@
  'org-babel-load-languages
  '((go . t)))
 
+;; Add rust support for Org Babel
+(use-package ob-rust
+  :ensure t)
+(require 'ob-rust)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((rust . t)))
+
 ;; HTTP Client For Org Mode
 (use-package restclient
   :ensure t
@@ -137,6 +145,7 @@
 ;; Also, PHP, Go, Bash is buried in here, a hook about php-mode
 
 (use-package rustic
+  :ensure t
   :mode ("\\.rs\\'" . rustic-mode)
   :config
   (setq rustic-lsp-client 'lsp-mode
@@ -214,7 +223,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
+   '(ob-rust helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
