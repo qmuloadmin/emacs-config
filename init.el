@@ -148,6 +148,7 @@
   :ensure t
   :mode ("\\.rs\\'" . rustic-mode)
   :config
+  (setq rustic-format-on-save 't)
   (setq rustic-lsp-client 'lsp-mode
         rustic-lsp-server 'rust-analyzer
         rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
@@ -202,7 +203,7 @@
  ;; If there is more than one, they won't work right.
  '(blink-matching-paren t)
  '(custom-safe-themes
-   '("c2e1201bb538b68c0c1fdcf31771de3360263bd0e497d9ca8b7a32d5019f2fae" "33ea268218b70aa106ba51a85fe976bfae9cf6931b18ceaf57159c558bbcd1e6" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
+   '("d0fb0c463d5d61e93f920e0fd1aa4c023bf719874b4d08f7f473b46c4adc0682" "6fc03df7304728b1346091dd6737cb0379f348ddc9c307f8b410fba991b3e475" "2d035eb93f92384d11f18ed00930e5cc9964281915689fa035719cab71766a15" "c2e1201bb538b68c0c1fdcf31771de3360263bd0e497d9ca8b7a32d5019f2fae" "33ea268218b70aa106ba51a85fe976bfae9cf6931b18ceaf57159c558bbcd1e6" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(dashboard-items '((projects . 5) (bookmarks . 5) (agenda . 5)))
  '(dashboard-projects-backend 'projectile)
  '(dired-sidebar-width 28)
@@ -223,15 +224,14 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(ob-rust helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional)))
+   '(modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+ '(rustic-lsp-format t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#292b2e" :foreground "#b2b2b2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 98 :width normal :foundry "UKWN" :family "Iosevka Fixed Medium"))))
- '(tab-line-tab ((t (:inherit tab-line :background "gray" :foreground "black" :box (:line-width 2 :color "gray") :weight semi-bold :height 80 :width ultra-condensed))))
- '(tab-line-tab-inactive ((t (:inherit tab-line-tab :background "gray17" :foreground "white smoke" :box (:line-width 2 :color "gray17") :weight semi-bold)))))
+ '(default ((t (:family "Iosevka Fixed Medium")))))
 
 ;; Window resizing configuration
 ;; Set to C-c combined with WASD (capital) controls
@@ -376,30 +376,21 @@
 ;;(startup-layout)
 
 ;; Themes
-(unless (package-installed-p 'zenburn-theme)
-  (package-install 'zenburn-theme))
-(unless (package-installed-p 'doneburn-theme)
-  (package-install 'doneburn-theme))
-(load-theme 'doneburn)
-(load-file "/home/zach/.emacs.d/themes/uwu.el/uwu-theme.el")
-(enable-theme 'uwu)
+(use-package modus-themes
+  :ensure
+  :init
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+		modus-themes-subtle-line-numbers t
+        modus-themes-region '(bg-only no-extiend))
 
-(defun toggle-theme ()
-  (interactive)
-  (if (eq (car custom-enabled-themes) 'uwu)
-      (progn 
-       (disable-theme 'uwu)
-       (enable-theme 'doneburn)
-      )
-    (progn
-     (disable-theme 'doneburn)
-     (enable-theme 'uwu)
-    ))
-)
-
-(global-set-key (kbd "C-S-t") 'toggle-theme)
-(toggle-theme)
-(toggle-theme)
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes)
+  :config
+  ;; Load the theme of your choice:
+  (modus-themes-load-vivendi) ;; OR (modus-themes-load-vivendi)
+  :bind ("C-S-t" . modus-themes-toggle))
 
 ;; Advice modifiers go here
 
