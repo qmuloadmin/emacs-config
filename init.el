@@ -91,6 +91,14 @@
  'org-babel-load-languages
  '((go . t)))
 
+;; Add rust support for Org Babel
+(use-package ob-rust
+  :ensure t)
+(require 'ob-rust)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((rust . t)))
+
 ;; HTTP Client For Org Mode
 (use-package restclient
   :ensure t
@@ -137,6 +145,7 @@
 ;; Also, PHP, Go, Bash is buried in here, a hook about php-mode
 
 (use-package rustic
+  :ensure t
   :mode ("\\.rs\\'" . rustic-mode)
   :config
   (setq rustic-format-on-save 't)
