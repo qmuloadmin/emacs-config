@@ -85,7 +85,9 @@
 
 ;; Add go support for Org Babel
 (use-package ob-go
-  :ensure t)
+  :ensure t
+  :config
+  (setq org-babel-go-command "GO111MODULE=off go"))
 (require 'ob-go)
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -376,6 +378,18 @@
 ;; execute the layout
 ;;(startup-layout)
 
+;; Open terminal in current projectile root in new window below
+(defun open-terminal-in-workdir ()
+  (interactive)
+  (let ((default-directory (if (projectile-project-root)
+                     (projectile-project-root)
+                   default-directory)))
+	(let ((buf (shell)))
+	  (switch-to-buffer (other-buffer buf))
+	  (switch-to-buffer-other-frame buf))))
+	
+(global-set-key (kbd "C-c t") 'open-terminal-in-workdir)
+
 ;; Themes
 (use-package modus-themes
   :ensure
@@ -384,7 +398,7 @@
   (setq modus-themes-italic-constructs t
         modus-themes-bold-constructs t
 		modus-themes-subtle-line-numbers t
-        modus-themes-region '(bg-only no-extiend))
+        modus-themes-region '(bg-only no-extend))
 
   ;; Load the theme files before enabling a theme
   (modus-themes-load-themes)
