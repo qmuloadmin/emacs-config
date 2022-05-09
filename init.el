@@ -150,7 +150,6 @@
   :ensure t
   :mode ("\\.rs\\'" . rustic-mode)
   :config
-  (setq rustic-format-on-save 't)
   (setq rustic-lsp-client 'lsp-mode
         rustic-lsp-server 'rust-analyzer
         rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
@@ -226,7 +225,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(hl-todo modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(rustic-lsp-format t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -281,12 +280,6 @@
 
 ;; Go - lsp-mode
 
-(defun go-before-save ()
-  (interactive)
-  (when go-mode
-    (lsp-organize-imports)
-    (lsp-format-buffer)))
-
 (use-package go-mode
   :defer t
   :ensure t
@@ -295,6 +288,13 @@
   (add-hook 'go-mode-hook
             (lambda ()
               (add-hook 'before-save-hook 'go-before-save))))
+
+(defun go-before-save ()
+  (interactive)
+  (when lsp-mode
+    (lsp-organize-imports)
+    (lsp-format-buffer)))
+
 
 ;; DAP (standard protocol for remote debugging servers) Configuration
 
@@ -328,7 +328,7 @@
 ;; Prettier
 (defun prettier-before-save ()
   (interactive)
-  (when web-mode
+  (when prettier-js-mode
 	(prettier-js)
 	))
 
