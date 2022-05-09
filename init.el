@@ -106,6 +106,15 @@
   :ensure t
   )
 
+;; HTTP Client For Org Mode (testing)
+(use-package ob-http
+  :ensure t)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (http . t)))
+
 ;; Sidebar Configuration
 
 (use-package all-the-icons
@@ -225,7 +234,7 @@
 	 (sql . t)))
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(hl-todo modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(rustic-lsp-format t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
