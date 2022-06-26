@@ -232,6 +232,7 @@
 	 (shell . t)
 	 (js . t)
 	 (sql . t)))
+ '(org-confirm-babel-evaluate nil)
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
    '(ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
@@ -274,7 +275,7 @@
 (global-set-key (kbd "S-M-r") 'lsp-rename)
 
 ;; Update this path to match whatever path intelephense was installed in
-(add-to-list 'exec-path "~/.nvm/versions/node/v10.20.1/bin/")
+(add-to-list 'exec-path "~/.nvm/versions/node/v17.9.1/bin/")
 (add-to-list 'exec-path "~/bin/")
 (add-to-list 'exec-path "~/.local/bin/")
 
@@ -427,3 +428,10 @@
 
  (advice-add 'message :around #'my-message-with-timestamp)
  
+;; Macros
+
+;; Org mode macros
+(defalias 'org-new-src-block
+   (kmacro "# + N A M E : <return> # + B E G I N _ S R C S-SPC <return> # + E N D _ S R C"))
+
+(define-key org-mode-map (kbd "C-c n") 'org-new-src-block)

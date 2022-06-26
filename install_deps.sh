@@ -20,3 +20,7 @@ pip install 'python-lsp-server[all]'
 
 ## Random stuff to buld out the emacs env 
 mkdir ~/.emacs-saves
+
+## THere are a couple steps that should be taken to avoid issues with org babel
+# 1, after installing all deps, execute this:
+# sed -i 's/jq -r/jq -j/g' ~/.emacs.d/elpa/ob-http-*/ob-http.el*
