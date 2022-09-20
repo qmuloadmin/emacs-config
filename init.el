@@ -78,10 +78,12 @@
 ;; Org Mode
 (use-package org
   :ensure t
-  :hook
-  ((org-mode . company))
   )
 (require 'org)
+
+(use-package org-bullets
+  :ensure t
+  )
 
 ;; Add go support for Org Babel
 (use-package ob-go
@@ -93,13 +95,10 @@
  'org-babel-load-languages
  '((go . t)))
 
-;; Add rust support for Org Babel
-(use-package ob-rust
+(use-package ob-typescript
   :ensure t)
-(require 'ob-rust)
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((rust . t)))
+(require 'ob-typescript)
+(use-package typescript-mode :ensure t)
 
 ;; HTTP Client For Org Mode
 (use-package restclient
@@ -110,10 +109,20 @@
 (use-package ob-http
   :ensure t)
 
+(use-package ob-sql-mode
+  :ensure t)
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (http . t)))
+   (typescript . t)
+   (http . t)
+   (sql . t)))
+
+
+;; Simple org-mode presentations
+(use-package epresent
+  :ensure t)
 
 ;; Sidebar Configuration
 
@@ -160,13 +169,10 @@
   :mode ("\\.rs\\'" . rustic-mode)
   :config
   (setq rustic-lsp-client 'lsp-mode
-        rustic-lsp-server 'rust-analyzer
-        rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
-  (define-key rustic-mode-map (kbd "C-c R") 'rustic-cargo-run)
-  (define-key rustic-mode-map (kbd "C-c T") 'rustic-cargo-test)
-  (define-key rustic-mode-map (kbd "C-c F") 'rustic-cargo-fmt)
+        rustic-lsp-server 'rust-analyzer)
   (add-hook 'rustic-mode-hook #'company-mode)
-)
+  )
+(require 'rustic-babel)
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm
@@ -181,6 +187,7 @@
   :ensure t
   :hook
   ((go-mode . lsp))
+  ((rustic-mode . lsp))
   ((php-mode . lsp))
   ((sh-mode . lsp))
   ((python-mode . lsp))
@@ -222,6 +229,8 @@
  '(lsp-disabled-clients '(\"jsts-ls\"))
  '(lsp-file-watch-threshold 4000)
  '(lsp-intelephense-licence-key "004XGB7ZTX9SUL5")
+ '(lsp-rust-all-features t)
+ '(lsp-rust-features [])
  '(lsp-ui-doc-position 'at-point)
  '(lsp-ui-flycheck-list-position 'right)
  '(mouse-wheel-flip-direction t)
@@ -233,17 +242,20 @@
 	 (js . t)
 	 (sql . t)))
  '(org-confirm-babel-evaluate nil)
+ '(org-export-backends '(ascii html icalendar latex odt org))
+ '(org-hide-emphasis-markers t)
+ '(org-image-actual-width t)
+ '(org-src-preserve-indentation nil)
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(dap-mode yasnippet org-bullets ob-sql-mode epresent typescript-mode ob-typescript dockerfile-mode ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(rustic-lsp-format t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (family "Iosevka Term Medium"))))
- '(font-lock-type-face ((t (:inherit modus-themes-bold :family "Iosevka Term Medium")))))
+ )
 
 ;; Window resizing configuration
 ;; Set to C-c combined with WASD (capital) controls
@@ -305,12 +317,11 @@
     (lsp-organize-imports)
     (lsp-format-buffer)))
 
-
 ;; DAP (standard protocol for remote debugging servers) Configuration
 
-;;(use-package dap-mode
-;;  :ensure t
-;; )
+(use-package dap-mode
+  :ensure t
+)
 
 ;;(dap-register-debug-provider
 ;; "go"
@@ -364,6 +375,11 @@
   :config
   (setq web-mode-content-types-alist
 	'(("jsx" . "\\.js[x]?\\'")))
+  )
+
+;; Dockerfile helpers
+(use-package dockerfile-mode :ensure t
+  :mode (("Dockerfile'" . dockerfile-mode))
   )
 
 ;; Custom Window Layout at start
@@ -429,9 +445,3 @@
  (advice-add 'message :around #'my-message-with-timestamp)
  
 ;; Macros
-
-;; Org mode macros
-(defalias 'org-new-src-block
-   (kmacro "# + N A M E : <return> # + B E G I N _ S R C S-SPC <return> # + E N D _ S R C"))
-
-(define-key org-mode-map (kbd "C-c n") 'org-new-src-block)
