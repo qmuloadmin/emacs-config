@@ -11,6 +11,10 @@ cd -
 GO111MODULE=on go get golang.org/x/tools/gopls@latest
 go install github.com/go-delve/delve/cmd/dlv@latest
 
+# Assumes ruby is already installed
+gem install solargraph
+# If this doesn't install into ruby/3.0.0 the path will need updated in init.el
+
 # Assumes npm is installed
 
 npm i -g markdown-it
