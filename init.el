@@ -181,7 +181,12 @@
 ;; PHP mode
 (use-package php-mode
   :ensure t
-)
+  )
+
+;; Ruby mode
+(use-package ruby-mode
+  :ensure t
+  )
 
 (use-package lsp-mode
   :ensure t
@@ -192,6 +197,7 @@
   ((sh-mode . lsp))
   ((python-mode . lsp))
   ((web-mode . lsp))
+  ((ruby-mode . lsp))
   :commands lsp
   :custom
   (lsp-eldoc-render-all t)
@@ -290,6 +296,7 @@
 (add-to-list 'exec-path "~/.nvm/versions/node/v17.9.1/bin/")
 (add-to-list 'exec-path "~/bin/")
 (add-to-list 'exec-path "~/.local/bin/")
+(add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
 
 ;; Go DE Configuration
 
