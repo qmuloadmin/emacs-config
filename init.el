@@ -20,6 +20,11 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+;; standalone epub mode
+(use-package nov
+  :ensure t)
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
 ;; Better startup screen, org mode todo integration
 (use-package dashboard
   :ensure t
@@ -70,7 +75,6 @@
 
 ;; Magit
 (unless (package-installed-p 'magit)
-  (package-refresh-contents)
   (package-install 'magit))
 
 (define-key global-map (kbd "C-c g") 'magit-status)
@@ -254,14 +258,14 @@
  '(org-src-preserve-indentation nil)
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(dap-mode yasnippet org-bullets ob-sql-mode epresent typescript-mode ob-typescript dockerfile-mode ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(nu-mode yuck-mode request-deferred all-the-icons-dired ob-go helm-projectile helm-slack slack nov dap-mode yasnippet org-bullets ob-sql-mode epresent typescript-mode ob-typescript dockerfile-mode ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(rustic-lsp-format t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "UKWN" :family "IosevkaTerm Nerd Font Mono")))))
 
 ;; Window resizing configuration
 ;; Set to C-c combined with WASD (capital) controls
@@ -301,7 +305,6 @@
 ;; Go DE Configuration
 
 (unless (package-installed-p 'company)
-  (package-refresh-contents)
   (package-install 'company))
 
 ;; Just to make sure go tools are enabled
