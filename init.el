@@ -19,6 +19,8 @@
 (global-tab-line-mode) ;; Enable buffer tabs in each window
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(delete-selection-mode 1)
+(setq mouse-autoselect-window t)
 
 ;; standalone epub mode
 (use-package nov
@@ -57,6 +59,12 @@
 ;; Goto line (based on evil :)
 (global-set-key (kbd "C-:") 'goto-line)
 (global-set-key (kbd "C-c l") 'helm-locate)
+
+;; Matrix Chat
+
+(use-package ement
+  :ensure t
+ )
 
 ;; SQL Mode
 
@@ -138,7 +146,7 @@
   :ensure t
   )
 (use-package dired-sidebar
-  :bind (("C-x C-f" . dired-sidebar-toggle-sidebar))
+  :bind (("C-c {" . dired-sidebar-toggle-sidebar))
   :ensure t
   :commands (dired-sidebar-toggle-sidebar)
   :init
@@ -204,13 +212,14 @@
   ((ruby-mode . lsp))
   :commands lsp
   :custom
+  (lsp-keep-workspaces-alive nil)
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
   (lsp-rust-analyzer-server-display-inlay-hints t)
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'hs-minor-mode)
-)
+  )
 
 (use-package lsp-ui
   :ensure t
@@ -258,14 +267,15 @@
  '(org-src-preserve-indentation nil)
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(nu-mode yuck-mode request-deferred all-the-icons-dired ob-go helm-projectile helm-slack slack nov dap-mode yasnippet org-bullets ob-sql-mode epresent typescript-mode ob-typescript dockerfile-mode ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
- '(rustic-lsp-format t))
+   '(ement terraform-mode eglot heaven-and-hell cyberpunk-theme nu-mode yuck-mode request-deferred all-the-icons-dired ob-go helm-projectile helm-slack slack nov dap-mode yasnippet org-bullets ob-sql-mode epresent typescript-mode ob-typescript dockerfile-mode ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+ '(rustic-lsp-format t)
+ '(warning-suppress-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "UKWN" :family "IosevkaTerm Nerd Font Mono")))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "UKWN" :family "IosevkaTerm Nerd Font Mono")))))
 
 ;; Window resizing configuration
 ;; Set to C-c combined with WASD (capital) controls
@@ -300,7 +310,6 @@
 (add-to-list 'exec-path "~/.nvm/versions/node/v17.9.1/bin/")
 (add-to-list 'exec-path "~/bin/")
 (add-to-list 'exec-path "~/.local/bin/")
-(add-to-list 'exec-path "~/.local/share/gem/ruby/3.0.0/bin")
 
 ;; Go DE Configuration
 
@@ -427,21 +436,11 @@
 (global-set-key (kbd "C-c t") 'open-terminal-in-workdir)
 
 ;; Themes
-(use-package modus-themes
-  :ensure
-  :init
-  ;; Add all your customizations prior to loading the themes
-  (setq modus-themes-italic-constructs t
-        modus-themes-bold-constructs t
-		modus-themes-subtle-line-numbers t
-        modus-themes-region '(bg-only no-extend))
 
-  ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
-  :config
-  ;; Load the theme of your choice:
-  (modus-themes-load-vivendi) ;; OR (modus-themes-load-vivendi)
-  :bind ("C-S-t" . modus-themes-toggle))
+(use-package modus-themes :ensure t)
+(modus-themes-select 'modus-vivendi)
+(global-set-key (kbd "C-T") 'modus-themes-toggle)
+(toggle-scroll-bar 0)
 
 ;; Advice modifiers go here
 
