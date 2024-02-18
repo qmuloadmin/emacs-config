@@ -22,6 +22,9 @@
 (delete-selection-mode 1)
 (setq mouse-autoselect-window t)
 
+;; Spell check in text buffers
+(add-hook 'text-mode-hook 'flyspell-mode)
+
 ;; standalone epub mode
 (use-package nov
   :ensure t)
@@ -39,18 +42,24 @@
   :init
   (projectile-mode +1))
 
-;; Helm search
-
-(use-package helm
+;; Vertico vertical search/completion option improvements
+(use-package vertico
   :ensure t
-  )
+  :init
+  (vertico-mode))
 
-(use-package helm-projectile
+(use-package consult
+  :ensure t)
+
+(use-package orderless
   :ensure t
-  )
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(global-set-key (kbd "C-c r") 'helm-projectile-rg)
-(global-set-key (kbd "C-c f") 'helm-projectile-find-file)
+(global-set-key (kbd "C-c r") 'consult-ripgrep)
+(global-set-key (kbd "C-c f") 'projectile-find-file)
+(global-set-key (kbd "C-c l") 'consult-line)
 
 ;; hs-mode (for code hiding/showing blocks)
 (global-set-key (kbd "<M-up>") 'hs-hide-block)
@@ -58,13 +67,24 @@
 
 ;; Goto line (based on evil :)
 (global-set-key (kbd "C-:") 'goto-line)
-(global-set-key (kbd "C-c l") 'helm-locate)
 
 ;; Matrix Chat
 
 (use-package ement
   :ensure t
+  )
+
+(defun matrix-connect ()
+  (interactive)
+  (shell-command "systemctl --user start pantalaimon")
+  (ement-connect :uri-prefix "http://localhost:8009")
  )
+
+(defun matrix-disconnect ()
+  (interactive)
+  (ement-disconnect)
+  (shell-command "systemctl --user stop pantalaimon")
+)
 
 ;; SQL Mode
 
@@ -245,6 +265,7 @@
  '(dired-sidebar-width 28)
  '(helm-locate-command "plocate %s -e --regex %s")
  '(horizontal-scroll-bar-mode nil)
+ '(ispell-program-name "/usr/bin/ispell")
  '(lsp-disabled-clients '(\"jsts-ls\"))
  '(lsp-file-watch-threshold 4000)
  '(lsp-intelephense-licence-key "004XGB7ZTX9SUL5")
@@ -267,15 +288,16 @@
  '(org-src-preserve-indentation nil)
  '(org-src-window-setup 'current-window)
  '(package-selected-packages
-   '(ement terraform-mode eglot heaven-and-hell cyberpunk-theme nu-mode yuck-mode request-deferred all-the-icons-dired ob-go helm-projectile helm-slack slack nov dap-mode yasnippet org-bullets ob-sql-mode epresent typescript-mode ob-typescript dockerfile-mode ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
+   '(htmlize consult projectile-ripgrep rg orderless vertico ement terraform-mode eglot heaven-and-hell cyberpunk-theme nu-mode yuck-mode request-deferred all-the-icons-dired ob-go helm-projectile helm-slack slack nov dap-mode yasnippet org-bullets ob-sql-mode epresent typescript-mode ob-typescript dockerfile-mode ob-http modus-themes poet-theme helm-rg dashboard doneburn-theme dired-sidebar all-the-icons anti-zenburn-theme php-mode spacemacs-theme zenburn-theme web-mode magit ob-restclient restclient helm yaml-mode yaml prettier-js clojure-mode flycheck company company-mode go-autocomplete go-complete go-mode auto-complete auth-complete lsp-ui lsp-mode rustic use-package s quelpa projectile ov frame-local dash-functional))
  '(rustic-lsp-format t)
+ '(scheme-program-name "guile")
  '(warning-suppress-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "UKWN" :family "IosevkaTerm Nerd Font Mono")))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight bold :height 98 :width normal :foundry "UKWN" :family "Iosevka Nerd Font")))))
 
 ;; Window resizing configuration
 ;; Set to C-c combined with WASD (capital) controls
