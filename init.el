@@ -1,5 +1,5 @@
 ;; General setup of high level deps, paths, tabs, etc
-(setq default-directory "/home/zach/Projects/src/github.com/OrderMyGear/")
+(setq default-directory "/home/zach/Projects/")
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
@@ -411,12 +411,16 @@
          ("\\.vue\\'" . web-mode)
 		 ("\\.json\\'" . web-mode))
   :hook
-  ((web-mode . prettier-js-mode))
-  :commands web-mode
+  (
+   (web-mode . prettier-js-mode)
+   )
   :config
   (setq web-mode-content-types-alist
-	'(("jsx" . "\\.js[x]?\\'")))
-  )
+		'(("jsx" . "\\.js[x]?\\'")))
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2))
 
 ;; Dockerfile helpers
 (use-package dockerfile-mode :ensure t
